@@ -6,6 +6,8 @@
 
 A cross-platform desktop application built with Tauri and React that helps you track daily work achievements using AI-powered organization.
 
+<img width="1196" height="795" alt="Screenshot 2025-07-29 at 11 45 30 PM" src="https://github.com/user-attachments/assets/689f55fc-be36-405d-aa9f-d5600174df52" />
+
 ## Features
 
 - **Split-panel interface**: Input on the left, live worklog preview on the right
