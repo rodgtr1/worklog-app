@@ -6,7 +6,7 @@ A cross-platform desktop application built with Tauri and React that helps you t
 
 - **Split-panel interface**: Input on the left, live worklog preview on the right
 - **AI-powered organization**: Uses OpenAI GPT-4o to intelligently group and timestamp entries
-- **Smart diff preview**: Optional "Show Diffs" mode with red/green change visualization and approve/reject workflow
+- **Secure API key storage**: Uses your system's keychain (macOS Keychain, Windows Credential Manager, Linux Secret Service)
 - **Smart report generation**: Create date-range reports in multiple formats (Executive, Detailed, Chronological, Accomplishments)
 - **Export functionality**: Download reports as Markdown files or copy to clipboard
 - **Local storage**: All data stays on your machine
@@ -29,10 +29,9 @@ A cross-platform desktop application built with Tauri and React that helps you t
    ```
 
 2. **Set up your OpenAI API key:**
-   ```bash
-   cp .env.example .env
-   # Edit .env and add: OPENAI_API_KEY=your_key_here
-   ```
+   - Launch the app with `npm run tauri dev`
+   - Go to the **Settings** tab
+   - Enter your OpenAI API key (it will be securely stored in your system keychain)
    
    Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
 
@@ -49,12 +48,10 @@ A cross-platform desktop application built with Tauri and React that helps you t
 ## Usage
 
 ### Daily Input Mode
-1. **Toggle "Show Diffs"** if you want to preview changes before applying
-2. **Add 1-3 work achievements** in the text area, one per line
-3. **Click "Preview Changes" or "Add to Worklog"** based on your diff setting
-4. **If using Show Diffs**: Review red/green changes, then click "✅ Apply Changes" or "❌ Reject Changes"
-5. **View the updated worklog** in the right panel
-6. **Use "Undo Last"** if you need to revert changes
+1. **Add 1-3 work achievements** in the text area, one per line
+2. **Click "Add to Worklog"** to process your entries with AI
+3. **View the updated worklog** in the right panel immediately
+4. **Use "Undo Last"** if you need to revert changes
 
 ### Report Generation Mode
 1. **Click "Generate Reports"** tab in the header
@@ -71,20 +68,24 @@ A cross-platform desktop application built with Tauri and React that helps you t
 
 ```
 worklog-app/
-├── assets/
-│   ├── worklog.md          # Your main worklog file
-│   └── backups/            # Timestamped backup files
 ├── src/
 │   ├── components/
-│   │   ├── PromptInput.tsx # Left panel input form
-│   │   └── WorklogViewer.tsx # Right panel markdown viewer
+│   │   ├── PromptInput.tsx    # Daily input form
+│   │   ├── WorklogViewer.tsx  # Markdown viewer
+│   │   ├── ReportGenerator.tsx # Report creation
+│   │   └── Settings.tsx       # Secure API key management
 │   ├── lib/
-│   │   └── fileUtils.ts    # Tauri API interactions
-│   └── App.tsx             # Main application layout
+│   │   └── fileUtils.ts       # Tauri API interactions
+│   └── App.tsx                # Main application layout
 └── src-tauri/
     └── src/
-        └── main.rs         # Rust backend with OpenAI integration
+        └── main.rs            # Rust backend with OpenAI integration
 ```
+
+**Data Storage:**
+- Worklog file: System app data directory (e.g., `~/Library/Application Support/com.worklog.app/worklog.md`)
+- Backups: Same directory under `backups/` folder
+- API key: Secure OS keychain storage
 
 ## How It Works
 
@@ -108,9 +109,12 @@ worklog-app/
 
 ## Security
 
-- API keys are stored locally in browser localStorage
-- All data processing happens locally except for OpenAI API calls
-- No telemetry or data collection
+- **API keys**: Stored securely in OS keychain (encrypted)
+  - macOS: Keychain Access
+  - Windows: Windows Credential Manager  
+  - Linux: Secret Service (GNOME Keyring)
+- **Data privacy**: All processing happens locally except OpenAI API calls
+- **No telemetry**: No data collection or tracking
 
 ## License
 
