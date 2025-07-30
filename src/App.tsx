@@ -44,81 +44,105 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-white border-b border-gray-200 shadow-sm px-6 py-5">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Daily Work Log</h1>
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{backgroundColor: '#DBE2EF'}}>
+              <span className="text-lg font-bold" style={{color: '#3F72AF'}}>📝</span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800">Daily Work Log</h1>
+          </div>
           <div className="flex items-center space-x-4">
             {/* Tab Navigation */}
-            <div className="flex rounded-lg border border-gray-300 overflow-hidden">
+            <div className="flex rounded-lg bg-gray-100 p-1 space-x-1">
               <button
                 onClick={() => setActiveTab('input')}
-                className={`px-4 py-2 text-sm font-medium ${
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 ${
                   activeTab === 'input'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                    ? 'text-white shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-200'
                 }`}
+                style={activeTab === 'input' ? {backgroundColor: '#3F72AF'} : {}}
               >
-                Daily Input
+                <span>✏️</span>
+                <span>Daily Input</span>
               </button>
               <button
                 onClick={() => setActiveTab('reports')}
-                className={`px-4 py-2 text-sm font-medium border-l border-gray-300 ${
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 ${
                   activeTab === 'reports'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                    ? 'text-white shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-200'
                 }`}
+                style={activeTab === 'reports' ? {backgroundColor: '#3F72AF'} : {}}
               >
-                Generate Reports
+                <span>📊</span>
+                <span>Reports</span>
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
-                className={`px-4 py-2 text-sm font-medium border-l border-gray-300 ${
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 ${
                   activeTab === 'settings'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                    ? 'text-white shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-200'
                 }`}
+                style={activeTab === 'settings' ? {backgroundColor: '#3F72AF'} : {}}
               >
-                Settings
+                <span>⚙️</span>
+                <span>Settings</span>
               </button>
             </div>
             
             <button
               onClick={handleUndo}
               disabled={isLoading}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
             >
-              {isLoading ? "Undoing..." : "Undo Last"}
+              <span>↶</span>
+              <span>{isLoading ? "Undoing..." : "Undo Last"}</span>
             </button>
           </div>
         </div>
       </header>
       
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden p-6 gap-6">
         {activeTab === 'input' ? (
           <>
-            <div className="w-1/2 border-r border-gray-200">
-              <PromptInput onWorklogUpdate={handleWorklogUpdate} />
+            <div className="w-1/2">
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <PromptInput onWorklogUpdate={handleWorklogUpdate} />
+              </div>
             </div>
             <div className="w-1/2">
-              <WorklogViewer content={worklogContent} />
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <WorklogViewer content={worklogContent} />
+              </div>
             </div>
           </>
         ) : activeTab === 'reports' ? (
           <>
-            <div className="w-1/2 border-r border-gray-200">
-              <ReportGenerator />
+            <div className="w-1/2">
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <ReportGenerator />
+              </div>
             </div>
             <div className="w-1/2">
-              <WorklogViewer content={worklogContent} />
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <WorklogViewer content={worklogContent} />
+              </div>
             </div>
           </>
         ) : (
           <>
-            <div className="w-1/2 border-r border-gray-200">
-              <Settings />
+            <div className="w-1/2">
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <Settings />
+              </div>
             </div>
             <div className="w-1/2">
-              <WorklogViewer content={worklogContent} />
+              <div className="bg-white rounded-2xl shadow-xl h-full overflow-hidden">
+                <WorklogViewer content={worklogContent} />
+              </div>
             </div>
           </>
         )}

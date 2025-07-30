@@ -156,9 +156,25 @@ function ReportGenerator({}: ReportGeneratorProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full text-white py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold flex items-center justify-center space-x-2"
+          style={{
+            backgroundColor: '#3F72AF',
+            '--tw-ring-color': '#3F72AF'
+          } as React.CSSProperties}
+          onMouseEnter={(e) => !isLoading ? (e.target as HTMLElement).style.backgroundColor = '#112D4E' : null}
+          onMouseLeave={(e) => !isLoading ? (e.target as HTMLElement).style.backgroundColor = '#3F72AF' : null}
         >
-          {isLoading ? "Generating Report..." : "Generate Report"}
+          {isLoading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Generating Report...</span>
+            </>
+          ) : (
+            <>
+              <span>📊</span>
+              <span>Generate Report</span>
+            </>
+          )}
         </button>
       </form>
 
