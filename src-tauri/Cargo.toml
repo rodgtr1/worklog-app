@@ -1,10 +1,10 @@
 [package]
 name = "worklog-app"
-version = "0.0.0"
-description = "A Tauri App for tracking daily work logs"
-authors = ["you"]
-license = ""
-repository = ""
+version = "1.0.0"
+description = "A cross-platform desktop application for tracking daily work achievements using AI-powered organization"
+authors = ["Daily Work Log Contributors"]
+license = "MIT"
+repository = "https://github.com/your-username/worklog-app"
 default-run = "worklog-app"
 edition = "2021"
 rust-version = "1.60"

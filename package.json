@@ -1,7 +1,9 @@
 {
   "name": "worklog-app",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "description": "A cross-platform desktop application for tracking daily work achievements using AI-powered organization",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

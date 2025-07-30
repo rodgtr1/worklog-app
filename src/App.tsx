@@ -9,6 +9,7 @@ function App() {
   const [worklogContent, setWorklogContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'input' | 'reports' | 'settings'>('input');
+  const [showUndoConfirm, setShowUndoConfirm] = useState<boolean>(false);
 
   const loadWorklog = async () => {
     try {
@@ -22,7 +23,12 @@ function App() {
     }
   };
 
-  const handleUndo = async () => {
+  const handleUndoClick = () => {
+    setShowUndoConfirm(true);
+  };
+
+  const handleUndoConfirm = async () => {
+    setShowUndoConfirm(false);
     try {
       setIsLoading(true);
       await undoLastChange();
@@ -32,6 +38,10 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleUndoCancel = () => {
+    setShowUndoConfirm(false);
   };
 
   const handleWorklogUpdate = () => {
@@ -94,7 +104,7 @@ function App() {
             </div>
             
             <button
-              onClick={handleUndo}
+              onClick={handleUndoClick}
               disabled={isLoading}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
             >
@@ -147,6 +157,45 @@ function App() {
           </>
         )}
       </div>
+
+      {/* Undo Confirmation Modal */}
+      {showUndoConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+            <div className="p-6">
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-amber-600 text-xl">⚠️</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Confirm Undo Action</h3>
+                  <p className="text-sm text-gray-500 mt-1">This action cannot be reversed</p>
+                </div>
+              </div>
+              
+              <p className="text-gray-700 mb-6">
+                Are you sure you want to undo your last worklog change? This will restore the previous version and permanently delete the current changes.
+              </p>
+              
+              <div className="flex space-x-3">
+                <button
+                  onClick={handleUndoCancel}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUndoConfirm}
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 font-medium flex items-center justify-center space-x-2"
+                >
+                  <span>↶</span>
+                  <span>Undo Changes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

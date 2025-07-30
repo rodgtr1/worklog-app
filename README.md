@@ -1,5 +1,9 @@
 # Daily Work Log Desktop App
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tauri](https://img.shields.io/badge/Tauri-1.6-blue.svg)](https://tauri.app/)
+[![React](https://img.shields.io/badge/React-18.2-blue.svg)](https://reactjs.org/)
+
 A cross-platform desktop application built with Tauri and React that helps you track daily work achievements using AI-powered organization.
 
 ## Features
@@ -83,9 +87,11 @@ worklog-app/
 ```
 
 **Data Storage:**
-- Worklog file: System app data directory (e.g., `~/Library/Application Support/com.worklog.app/worklog.md`)
-- Backups: Same directory under `backups/` folder
-- API key: Secure OS keychain storage
+- **Worklog file**: System app data directory
+  - **Production**: `~/Library/Application Support/com.worklog.app/worklog.md` (macOS)
+  - **Development**: Varies by system, managed by Tauri
+- **Backups**: Same directory under `backups/` folder  
+- **API key**: Secure OS keychain storage (always secure in both dev/prod)
 
 ## How It Works
 
@@ -116,6 +122,16 @@ worklog-app/
 - **Data privacy**: All processing happens locally except OpenAI API calls
 - **No telemetry**: No data collection or tracking
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
 ## License
 
-This project is built for personal use. Modify and distribute as needed.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Built with [Tauri](https://tauri.app/) for cross-platform desktop development
+- Uses [OpenAI GPT-4o](https://openai.com/) for intelligent content organization
+- UI styled with [Tailwind CSS](https://tailwindcss.com/)
