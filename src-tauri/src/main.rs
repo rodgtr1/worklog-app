@@ -94,7 +94,7 @@ async fn process_worklog(entries: Vec<String>) -> Result<(), String> {
         - If the topic is new, create a new section header and add entries underneath it.
         - For each entry:
         - Use the exact phrasing provided by the user.
-        - Add the current date in parentheses at the end, like (Jul 29, 2025).
+        - Add today's date in parentheses at the end, using the date provided in the user prompt.
         - Do not group tasks under "Today's entries" or any date-based header.
         - Do not generate summaries or sub-bullets.
         - Maintain a clean, organized, topical structure.
@@ -103,10 +103,14 @@ async fn process_worklog(entries: Vec<String>) -> Result<(), String> {
         "#;
 
 
+    // Get current date for timestamp
+    let current_date = chrono::Local::now().format("%b %-d, %Y").to_string();
+    
     let user_prompt = format!(
-        "Here is the current worklog:\n\n{}\n\nHere are new work entries to add:\n\n{}",
+        "Here is the current worklog:\n\n{}\n\nHere are new work entries to add:\n\n{}\n\nToday's date is: {}",
         current_log,
-        entries.join("\n")
+        entries.join("\n"),
+        current_date
     );
 
     // Make OpenAI API call with timeout
