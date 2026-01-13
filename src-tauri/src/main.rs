@@ -8,7 +8,7 @@ use std::fs;
 use regex::Regex;
 use chrono::NaiveDate;
 use keyring::Entry;
-use tauri::api::path;
+use tauri::Manager;
 
 
 // Helper function to get OpenAI API key from secure storage
@@ -52,13 +52,15 @@ async fn delete_openai_key() -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn process_worklog(entries: Vec<String>) -> Result<(), String> {
+async fn process_worklog(app_handle: tauri::AppHandle, entries: Vec<String>) -> Result<(), String> {
     // Get API key from secure storage
     let api_key = get_openai_key()?;
-    
+
     // Use app data directory to avoid triggering rebuilds
-    let app_data_dir = path::app_data_dir(&tauri::Config::default())
-        .ok_or("Failed to get app data directory")?;
+    let app_data_dir = app_handle
+        .path()
+        .app_data_dir()
+        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
     let worklog_path = app_data_dir.join("worklog.md");
     let backup_dir = app_data_dir.join("backups");
 
@@ -160,9 +162,11 @@ async fn process_worklog(entries: Vec<String>) -> Result<(), String> {
 
 
 #[tauri::command]
-async fn read_worklog() -> Result<String, String> {
-    let app_data_dir = path::app_data_dir(&tauri::Config::default())
-        .ok_or("Failed to get app data directory")?;
+async fn read_worklog(app_handle: tauri::AppHandle) -> Result<String, String> {
+    let app_data_dir = app_handle
+        .path()
+        .app_data_dir()
+        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
     let worklog_path = app_data_dir.join("worklog.md");
     
     match fs::read_to_string(&worklog_path) {
@@ -178,9 +182,11 @@ async fn read_worklog() -> Result<String, String> {
 }
 
 #[tauri::command]
-async fn undo_last_change() -> Result<(), String> {
-    let app_data_dir = path::app_data_dir(&tauri::Config::default())
-        .ok_or("Failed to get app data directory")?;
+async fn undo_last_change(app_handle: tauri::AppHandle) -> Result<(), String> {
+    let app_data_dir = app_handle
+        .path()
+        .app_data_dir()
+        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
     let backup_dir = app_data_dir.join("backups");
     let worklog_path = app_data_dir.join("worklog.md");
 
@@ -226,16 +232,19 @@ async fn undo_last_change() -> Result<(), String> {
 
 #[tauri::command]
 async fn generate_summary_report(
+    app_handle: tauri::AppHandle,
     start_date: String,
-    end_date: String, 
+    end_date: String,
     report_style: String
 ) -> Result<String, String> {
     // Get API key from secure storage
     let api_key = get_openai_key()?;
 
     // Read current worklog
-    let app_data_dir = path::app_data_dir(&tauri::Config::default())
-        .ok_or("Failed to get app data directory")?;
+    let app_data_dir = app_handle
+        .path()
+        .app_data_dir()
+        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
     let worklog_path = app_data_dir.join("worklog.md");
     let current_log = match fs::read_to_string(&worklog_path) {
         Ok(content) => content,
